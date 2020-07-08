@@ -3,12 +3,13 @@ package am.tech42.common;
  import java.rmi.Remote;
  import java.rmi.RemoteException;
  import java.util.List;
+ import java.util.UUID;
 
 public interface ShoppingService extends Remote{
 
 	List<Product> getProductList() throws RemoteException;
-	List<Product> getOrder(int shopingCard) throws RemoteException;
-	boolean buyProduct(int shopingCard,String productName, int count) throws RemoteException;
-	Integer getShoppingCard() throws RemoteException;
-	void checkout(int shopingCard)throws RemoteException;
+	ShoppingCard getSoppingcard(UUID sessionId) throws RemoteException;
+	void addProductToShoppingCard(UUID sessionId,int productId, int qty) throws RemoteException;
+	UUID openSession() throws RemoteException;
+	void checkout(UUID sessionId)throws RemoteException;
 }

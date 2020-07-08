@@ -4,77 +4,70 @@ import am.tech42.common.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.UUID;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Random;
+
+
 
 public class OnlineShop extends UnicastRemoteObject implements ShoppingService{
-	private Map <String , Product> products;
-	private Map <Integer , List<Product>> shoppingCards;
+	private static List<Product> products = Arrays.asList(
+		new Product("cup", 500),
+		new Product("pen", 250),
+		new Product("table", 1000)
+		);
+	private static Map<UUID,ShoppingCard> shoppingCards;
 
 	public OnlineShop ()throws RemoteException{
-		products = new HashMap<>();
 		shoppingCards = new HashMap<>();
 	}
 
 	@Override
 	public List<Product> getProductList() {
-		return new ArrayList<Product>(products.values());
+		return products;
 	}
 
 	@Override
-	public List<Product> getOrder(int shopingCard){
-		List <Product> order = shoppingCards.get(shopingCard) ;
-		return order;
+	public ShoppingCard getSoppingcard(UUID sessionId){
+		return shoppingCards.get(sessionId);
 	}
 
 	@Override
-	public boolean buyProduct(int shopingCard,String productName, int count){
-		productName = productName.toLowerCase();
-		if(products.get(productName) == null){
-			return false;
+	public void addProductToShoppingCard(UUID sessionId,int productId, int qty) {
+		Product product = getProduct(productId);
+		if (product == null){
+			throw new IllegalArgumentException();
 		}
-		List<Product> order = shoppingCards.get(shopingCard);
-		for (int i = 0; i < count; i++){
-			order.add(products.get(productName));
+		ShoppingCard shopingCard = shoppingCards.get(sessionId);
+		if(shopingCard == null){
+			shopingCard = new ShoppingCard();
 		}
-		shoppingCards.put(shopingCard,order);
-		return true;
+		Map <Product, Integer> products = shopingCard.getProducts();
+		if(products.get(product) != null){
+			qty += products.get(product);
+		}
+		products.put(product,qty);
+		shoppingCards.put(sessionId,shopingCard);
+	}
+	@Override
+	public UUID openSession() {
+		return UUID.randomUUID();
 	}
 
 	@Override
-	public Integer getShoppingCard(){
-		Integer id = generateId();
-		while (shoppingCards.get(id) != null){
-			id = generateId();
-		}
-		shoppingCards.put(id, new ArrayList<>()); 
-		return id;
-	}
-
-	@Override
-	public void checkout(int shopingCard){
-		shoppingCards.remove(shopingCard);
-	}
-
-	private Integer generateId(){
-		return new Random().nextInt(10000);
-	}
-
-	public void  addProduct(Product product){
-		products.put(product.getProductType().toLowerCase(),product);
-	}
-
-	public void  addProducts(List<Product> productlist){
-		for(Product product : productlist){
-			products.put(product.getProductType().toLowerCase(),product);
-		}	
-	}
-	public void  addProducts(Product ... productlist){
-		for(Product product : productlist){
-			products.put(product.getProductType().toLowerCase(),product);
-		}
+	public void checkout(UUID sessionId){
+		shoppingCards.get(sessionId).setProducts(null);
+		shoppingCards.remove(sessionId);
 	}	
+
+	private Product getProduct (int productId){
+		for (Product product : products){
+			if(product.getId() == productId ){
+				return product;
+			}
+		}
+		return null;
+	}
 	
 }

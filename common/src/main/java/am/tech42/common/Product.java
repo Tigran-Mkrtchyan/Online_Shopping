@@ -3,23 +3,29 @@ package am.tech42.common;
 import java.io.Serializable;
 
 public class Product implements Serializable{
-	private String productType;
-	private int productPrice;
+	private int id;
+	private String name;
+	private int price;
+	private static int idSequence = 0;
 
-	public Product(String productType, int productPrice){
-		this.productType = productType;
-		this.productPrice = productPrice;
+	public Product(String name, int price){
+		id = ++idSequence;
+		this.name = name;
+		this.price = price;
 	}
 
-	public String getProductType(){
-		return productType;
+	public String getName(){
+		return name;
 	}
-	public int getProductPrice(){
-		return productPrice; 
+	public int getPrice(){
+		return price; 
+	}
+	public int getId(){
+		return id; 
 	}
 
 	@Override
 	public String toString(){
-		return productType + "'s price is " + productPrice;
+		return "|\t" +id + "\t|\t"+ name +  "\t|\t" +price + "\t|";
 	}
 }
