@@ -6,36 +6,36 @@ import java.util.HashMap;
 
 public class ShoppingCard implements Serializable{
 
-	private  Map<Product,Integer> products;
+	private  Map<Product,Integer> basket;
 
 	public ShoppingCard(){
-		products = new HashMap<>();
+		basket = new HashMap<>();
 	}
 
 	public int getTotalPrice(){
 		int totalPrice = 0;
-		for (Map.Entry<Product,Integer> productRow : products.entrySet()){
+		for (Map.Entry<Product,Integer> productRow : basket.entrySet()){
 			totalPrice += productRow.getKey().getPrice() * productRow.getValue();
 		}
 		return totalPrice;
 	}
 
-	public Map<Product,Integer> getProducts(){
-		return products;
+	public Map<Product,Integer> getBasket(){
+		return basket;
 	}
-	public void setProducts(Map<Product,Integer> products){
-		this.products = products;
+	public void setBasket(Map<Product,Integer> basket){
+		this.basket = basket;
 	}
 
 	@Override
 	public String toString(){
-		String result = "=====Product==========Price=========Quantity=====\n"+
-						 "-------------------------------------------------\n";
-		for (Map.Entry<Product,Integer> productRow : products.entrySet()){
+		String result = "=========Product==============Price=========Quantity====\n"+
+						 "--------------------------------------------------------\n";
+		for (Map.Entry<Product,Integer> productRow : basket.entrySet()){
 			result += "|\t" + productRow.getKey().getName() +
 			 "\t|\t"+  productRow.getKey().getPrice()  +
 			  "\t|\t"+  productRow.getValue() +"\t|\n" +
-			"-------------------------------------------------\n";
+			"--------------------------------------------------------\n";
 		}
 		result +="============== " + "total price - "+ getTotalPrice() +" ===============\n";
 		return result;

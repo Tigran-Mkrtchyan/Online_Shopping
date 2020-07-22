@@ -1,15 +1,15 @@
 package am.tech42.common;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Product implements Serializable{
 	private int id;
 	private String name;
 	private int price;
-	private static int idSequence = 0;
-
-	public Product(String name, int price){
-		id = ++idSequence;
+	
+	public Product(int id , String name, int price){
+		this.id = id;
 		this.name = name;
 		this.price = price;
 	}
@@ -27,5 +27,17 @@ public class Product implements Serializable{
 	@Override
 	public String toString(){
 		return "|\t" +id + "\t|\t"+ name +  "\t|\t" +price + "\t|";
+	}
+	@Override
+	public boolean equals(Object o) {
+		 if (this == o) return true;
+		 if (o == null || getClass() != o.getClass()) return false;
+		 Product product = (Product) o;
+		 return id == product.id && Objects.equals(name, product.name);
+	}
+
+	@Override
+	public int hashCode() {
+	 	return Objects.hash(id, name);
 	}
 }

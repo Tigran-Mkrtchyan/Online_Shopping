@@ -8,10 +8,6 @@
   <artifactId>server</artifactId>
   <version>1.0</version>
 
-  <name>server</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -24,7 +20,13 @@
       <artifactId>common</artifactId>
       <version>1.0</version>
     </dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.2.14</version>
+    </dependency>
   </dependencies>
+
 
    <build>
        <plugins>

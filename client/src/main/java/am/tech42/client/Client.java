@@ -61,10 +61,10 @@ public class Client{
 	}
 	public static void getProductList() throws RemoteException{
 		List<Product> products = shop.getProductList();
-		System.out.println("====================products====================");
+		System.out.println("========================products========================");
 		for (Product product :products ){
 			System.out.println(product);
-			System.out.println("------------------------------------------------");
+			System.out.println("--------------------------------------------------------");
 
 		}
 	}
