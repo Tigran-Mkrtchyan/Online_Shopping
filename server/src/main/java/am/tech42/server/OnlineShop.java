@@ -19,9 +19,9 @@ public class OnlineShop extends UnicastRemoteObject implements ShoppingService{
 	
 	private List<Product> getProducts(){
 		List<Product> productList = new ArrayList<>();
-		try{
+		try(
 			Connection connection = DriverManager.getConnection("jdbc:postgresql://fm-toolbox.duckdns.org:5433/shop","test","test");
-			Statement s = connection.createStatement();
+			Statement s = connection.createStatement();){
 			ResultSet resultSet = s.executeQuery("select p.id,name,price from products p inner join product_details pd on p.id = pd.product_id");
 			while (resultSet.next()){
 				int id = resultSet.getInt(1);
@@ -64,7 +64,6 @@ public class OnlineShop extends UnicastRemoteObject implements ShoppingService{
 		}
 		Map <Product, Integer> basket = shopingCard.getBasket();
 		if(basket.get(product) != null){
-			System.out.println("product id is product " + product.getId());
 			qty += basket.get(product);
 		}
 		basket.put(product,qty);
