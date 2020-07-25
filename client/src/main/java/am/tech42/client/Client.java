@@ -29,8 +29,8 @@ public class Client{
 				System.out.println("(C) checkout");
 				System.out.println("(Q) quit the application");
 
-				String command = scaner.nextLine(); 
-				switch(command.toLowerCase()){
+				String command = scaner.nextLine().toLowerCase().substring(0,1); 
+				switch(command){
 					case "l":
 						getProductList();
 						break;
